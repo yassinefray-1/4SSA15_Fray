@@ -31,5 +31,18 @@ pipeline {
                 }
             }
         }
+        stage('Package') {
+            steps {
+                dir('backend') {
+                    sh 'mvn package -DskipTests'
+                }
+            }
+        }
+        stage('Docker Build & Deploy') {
+            steps {
+                sh 'docker compose down || true'
+                sh 'docker compose up -d --build'
+            }
+        }
     }
 }
